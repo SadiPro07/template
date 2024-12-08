@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Calendar, Info } from "lucide-react";
-import { VideoRecorder } from "./components/VideoRecorder";
-import { RegistrationForm } from "./components/RegistrationForm";
-import { storage } from "./config/firebase";
-import { ref, uploadBytes } from "firebase/storage";
-import type { FormData } from "./types";
+import React, { useState } from 'react';
+import { Calendar, Info } from 'lucide-react';
+import { VideoRecorder } from './components/VideoRecorder';
+import { RegistrationForm } from './components/RegistrationForm';
+import { storage } from './config/firebase';
+import { ref, uploadBytes } from 'firebase/storage';
+import type { FormData } from './types';
 
 function App() {
   const [showForm, setShowForm] = useState(false);
@@ -12,7 +12,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCalendlyClick = () => {
-    window.open("https://calendly.com/your-calendar", "_blank");
+    window.open('https://calendly.com/your-calendar', '_blank');
   };
 
   const handleVideoChange = (blob: Blob) => {
@@ -21,7 +21,7 @@ function App() {
 
   const handleSubmit = async (formData: FormData) => {
     if (!videoBlob) {
-      alert("Please record a video introduction before submitting");
+      alert('Please record a video introduction before submitting');
       return;
     }
 
@@ -33,10 +33,10 @@ function App() {
       await uploadBytes(videoRef, videoBlob);
 
       // Send form data and video URL to server
-      const response = await fetch("/api/register", {
-        method: "POST",
+      const response = await fetch('/api/register', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...formData,
@@ -45,25 +45,23 @@ function App() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit registration");
+        throw new Error('Failed to submit registration');
       }
 
-      alert("Registration submitted successfully!");
+      alert('Registration submitted successfully!');
       setShowForm(false);
       setVideoBlob(null);
     } catch (error) {
-      console.error("Error submitting registration:", error);
-      alert(
-        "An error occurred while submitting your registration. Please try again."
-      );
+      console.error('Error submitting registration:', error);
+      alert('An error occurred while submitting your registration. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className=" bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="flex items-center justify-center min-h-screen min-w-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         {!showForm ? (
           <div className="text-center max-w-3xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
@@ -105,10 +103,7 @@ function App() {
                     <h4 className="text-lg font-semibold text-gray-700 mb-6">
                       Personal Information
                     </h4>
-                    <RegistrationForm
-                      onSubmit={handleSubmit}
-                      isSubmitting={isSubmitting}
-                    />
+                    <RegistrationForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
                   </div>
                   <div className="lg:pl-8 lg:border-l lg:border-gray-200">
                     <h4 className="text-lg font-semibold text-gray-700 mb-6">
